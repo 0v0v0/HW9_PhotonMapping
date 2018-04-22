@@ -10,7 +10,7 @@ public:
 
     KDNode* leftChild;
     KDNode* rightChild;
-    unsigned int axis; // Which axis split this node represents
+    unsigned long axis; // Which axis split this node represents
     glm::vec3 minCorner, maxCorner; // The world-space bounds of this node
     std::vector<Photon> particles; // A collection of pointers to the particles contained in this node.
 };
@@ -29,17 +29,17 @@ public:
     glm::vec3 minCorner, maxCorner; // For visualization purposes
 
     //recursor used in building
-    KDNode* recursive(int dir,
-                      int min,
-                      int max,
+    KDNode* recursive(long dir,
+                      long min,
+                      long max,
                       const std::vector<Photon> *points);
 
     //ADDED ones
 
     //used to store sorted ID in xyz axis
-    std::vector<int> xsorted;
-    std::vector<int> ysorted;
-    std::vector<int> zsorted;
+    std::vector<long> xsorted;
+    std::vector<long> ysorted;
+    std::vector<long> zsorted;
 
     //store KD tree
     std::vector<KDNode> tree;

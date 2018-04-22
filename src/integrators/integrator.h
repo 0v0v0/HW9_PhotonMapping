@@ -37,6 +37,8 @@ public:
     // Clamp the upper end of our bounds to not go past the edge of the film.
     void ClampBounds();
 
+    virtual Color3f Gather_Photons(const Ray& ray, const Scene& scene, std::shared_ptr<Sampler> sampler);
+
 protected:
     Scene const * const scene;
     Camera const * const camera;			// A pointer to the Camera instance stored in MyGL.

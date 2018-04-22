@@ -33,8 +33,18 @@ void Integrator::Render()
             // Accumulate color in the pixel
             pixelColor += L;
         }
+
+
+
+
         // Average all samples' energies
         pixelColor /= pixelSamples.size();
+
+        /// Gather Photons only once per pixel, rather than every sample!
+        Point2f sample = Point2f(pixel);
+        Ray ray = camera->Raycast(sample);
+        pixelColor += Gather_Photons(ray,*scene,sampler);
+
         film->SetPixelColor(pixel, glm::clamp(pixelColor, 0.f, 1.f));
     }
     //We're done here! All pixels have been given an averaged color.
@@ -46,4 +56,9 @@ void Integrator::ClampBounds()
     Point2i max = bounds.Max();
     max = Point2i(std::min(max.x, film->bounds.Max().x), std::min(max.y, film->bounds.Max().y));
     bounds = Bounds2i(bounds.Min(), max);
+}
+
+Color3f Integrator::Gather_Photons(const Ray& ray, const Scene& scene, std::shared_ptr<Sampler> sampler)
+{
+    return Color3f(0);
 }

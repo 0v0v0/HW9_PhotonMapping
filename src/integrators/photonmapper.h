@@ -19,6 +19,8 @@ public:
 
     DirectLightingIntegrator* direct_light_integrator;
 
+    Color3f Gather_Photons(const Ray& ray, const Scene& scene, std::shared_ptr<Sampler> sampler);
+
 private:
     bool preprocessing;
     //Preprocess variables

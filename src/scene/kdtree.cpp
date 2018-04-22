@@ -32,10 +32,10 @@ void KDTree::build(const std::vector<Photon> *points)
     //I think this time the points will be many so let's use uint instead of int?
     //unsigned int does not work well in for loops, change back!
 
-    int size=points->size();
+    long size=points->size();
 
     //Init
-    for( int i=0;i<size;i++)
+    for( long i=0;i<size;i++)
     {
         xsorted.push_back(i);
         ysorted.push_back(i);
@@ -46,16 +46,16 @@ void KDTree::build(const std::vector<Photon> *points)
     //Checked from Wikipidia, which is the most efficient way I think?
     //This sorts the points from big to small in xyz axis
 
-    int x_tmp;
-    int y_tmp;
-    int z_tmp;
+    long x_tmp;
+    long y_tmp;
+    long z_tmp;
 
     qDebug() << "Sorting X";
 
-    for(int i=0; i<size; i++)
+    for(long i=0; i<size; i++)
     {
         x_tmp=xsorted.at(i);
-        int j=i-1;
+        long j=i-1;
 
         while(j>=0 && xSort( points->at( xsorted.at(j) ) , points->at(x_tmp) ) )
         {
@@ -66,10 +66,10 @@ void KDTree::build(const std::vector<Photon> *points)
     }
 
     qDebug() << "Sorting Y";
-    for(int i=0; i<size; i++)
+    for(long i=0; i<size; i++)
     {
         y_tmp=ysorted.at(i);
-        int j=i-1;
+        long j=i-1;
 
         while(j>=0 && ySort( points->at( ysorted.at(j) ) , points->at(y_tmp) ) )
         {
@@ -80,10 +80,10 @@ void KDTree::build(const std::vector<Photon> *points)
     }
 
     qDebug() << "Sorting Z";
-    for(int i=0; i<size; i++)
+    for(long i=0; i<size; i++)
     {
         z_tmp=zsorted.at(i);
-        int j=i-1;
+        long j=i-1;
 
         while(j>=0 && zSort( points->at( zsorted.at(j) ) , points->at(z_tmp) ) )
         {
@@ -102,17 +102,17 @@ void KDTree::build(const std::vector<Photon> *points)
     qDebug() << "build complete!";
 }
 
-KDNode* KDTree::recursive( int dir,
-                           int min,
-                           int max,
+KDNode* KDTree::recursive( long dir,
+                           long min,
+                           long max,
                            const std::vector<Photon> *points)
 {
-    int size=max-min;
+    long size=max-min;
     KDNode* node=new KDNode();
 
     if(size>0)
     {
-        int left,right;
+        long left,right;
 
         if(size%2 == 0)
         {

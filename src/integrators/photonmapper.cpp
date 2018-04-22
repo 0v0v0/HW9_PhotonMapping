@@ -44,7 +44,7 @@ void PhotonMapper::Render()
         }
 
         //FOR EACH photon shot into the scene
-        for(int i =0;i< numPhotons ; i++)
+        for(long i =0;i< numPhotons ; i++)
         {
             //Which Light we shoot from?
             int which_light = std::min((int)(sampler->Get1D() * nLights), nLights - 1);
@@ -185,6 +185,82 @@ Color3f PhotonMapper::Li(const Ray &ray, const Scene &scene, std::shared_ptr<Sam
     //Direct Lighting Part...
     L+=direct_light_integrator->Li(ray,scene,sampler,depth);
 
+//    if(!scene.Intersect(ray,&isect))
+//    {
+//        return L;
+//    }
+
+//    if(!isect.ProduceBSDF())
+//    {
+//        L += isect.Le(-ray.direction);
+//        return L;
+//    }
+
+//    //Get Photons
+//    float r = 0.1f;
+
+//    std::vector<Photon*> photon_inrange;
+//    kdTree->particlesInSphere(isect.point, r, &photon_inrange);
+
+//    Color3f photon_gather(0);
+
+//    for(int i=0; i <photon_inrange.size() ; i++)
+//    {
+//        Photon* a = photon_inrange.at(i);
+
+//        //L += a->color;
+
+//        // Evaluate BSDF for light sampling strategy
+
+//        bool specular = false;
+
+//        BxDFType bsdfFlags = specular ? BSDF_ALL : BxDFType(BSDF_ALL & ~BSDF_SPECULAR);
+
+//        float scatteringPdf = 0;
+
+//        Color3f f(0);
+
+//        f = isect.bsdf->f(-ray.direction, a->wi, bsdfFlags);
+//        scatteringPdf = isect.bsdf->Pdf(-ray.direction, a->wi, bsdfFlags);
+
+//        if(IsBlack(f))
+//        {
+//            f =isect.bsdf->f(ray.direction, a->wi, bsdfFlags);
+//            scatteringPdf = isect.bsdf->Pdf(ray.direction, a->wi, bsdfFlags);
+//        }
+
+//        float dot=AbsDot(a->wi, isect.normalGeometric);
+
+//        if(!std::isinf(dot))
+//        {
+//            f*=dot;
+//        }
+
+//        if (!IsBlack(f))
+//        {
+//            // Add light's contribution to reflected radiance
+//            {
+//                if( (scatteringPdf !=0) && (!std::isinf(scatteringPdf)))
+//                {
+//                    L += f * a->color/ scatteringPdf;
+//                    //L+= f * (a->color) * (1.f/ photon_inrange.size() );
+//                }
+//            }
+//        }
+
+//    }
+
+    return L;
+}
+
+//HW9
+
+Color3f PhotonMapper::Gather_Photons(const Ray& ray, const Scene& scene, std::shared_ptr<Sampler> sampler)
+{
+    Color3f L(0);
+
+    Intersection isect;
+
     if(!scene.Intersect(ray,&isect))
     {
         return L;
@@ -204,7 +280,7 @@ Color3f PhotonMapper::Li(const Ray &ray, const Scene &scene, std::shared_ptr<Sam
 
     Color3f photon_gather(0);
 
-    for(int i=0; i <photon_inrange.size() ; i++)
+    for(long i=0; i <photon_inrange.size() ; i++)
     {
         Photon* a = photon_inrange.at(i);
 
@@ -252,8 +328,6 @@ Color3f PhotonMapper::Li(const Ray &ray, const Scene &scene, std::shared_ptr<Sam
 
     return L;
 }
-
-//HW9
 
 void PhotonMapper::setKDTree(KDTree * kdtree)
 {
