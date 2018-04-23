@@ -40,11 +40,15 @@ Since searching the KD tree for each sample in each pixel is not necessery, I mo
 
 The photon mapping part is now in the "photon gather" function. In Integrator Class, this virtual function just returns Color3f(0) since every other integrators will call this function. But in photon mapping integrator there's another implementation of this function so it does the KD Tree searching and add the photon energy with the direct lighting. 
 
+The timing shorted from 1.5 hour to 5 minutes for a 100 sample 10K photon map.
+
 IF you wish to see the original version of photon mapping, you can move the function from outside the sample loop to inside the sample loop, so it still runs per sample per pixel. 
 
 ## Photon 40K
 
 Besides, in the KD Tree part, to support tons of photons, I changed all of "int"s to "long". It do slows down the program, but it supports a larger photon structure. 
+
+These two images are rendered using 40,000 photons: 
 
 ![](./photon40K_c2L.png)
 
