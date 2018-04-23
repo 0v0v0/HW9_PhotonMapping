@@ -33,3 +33,19 @@ I thought my KD tree searching runs fast enough, but since for each pixel we are
 I left a DEBUG Mode for the photon checking, if you enable the debug in photon shooting, all the photon "color" will goes from red to blue, according to bounce times.
 
 ![](./Debug.png)
+
+## UPDATE
+
+Since searching the KD tree for each sample in each pixel is not necessery, I modified the functions. In this version, the Li function ONLY compute direct lighting. 
+
+The photon mapping part is now in the "photon gather" function. In Integrator Class, this virtual function just returns Color3f(0) since every other integrators will call this function. But in photon mapping integrator there's another implementation of this function so it does the KD Tree searching and add the photon energy with the direct lighting. 
+
+IF you wish to see the original version of photon mapping, you can move the function from outside the sample loop to inside the sample loop, so it still runs per sample per pixel. 
+
+## Photon 40K
+
+Besides, in the KD Tree part, to support tons of photons, I changed all of "int"s to "long". It do slows down the program, but it supports a larger photon structure. 
+
+![](./photon40K_c2L.png)
+
+![](./photon40K_2lights.png)
